@@ -1,0 +1,8 @@
+@startuml
+title Use case
+actor Client
+participant Localhost
+
+Client --> Localhost : Entry ID
+Localhost --> Client : Entry
+@enduml

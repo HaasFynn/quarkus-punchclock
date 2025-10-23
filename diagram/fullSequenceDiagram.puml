@@ -1,0 +1,20 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Worker
+
+== Request ==
+
+Worker -> localhost: Create Entry
+localhost -> EntryController: Entry info
+EntryController -> EntryService: Entry info
+EntryService -> Database: Create Entry
+Database -> EntryService: Return Status
+EntryService -> EntryController: Status
+EntryController -> localhost: Status
+localhost -> Worker: Return Status
+
+== Response ==
+
+@enduml

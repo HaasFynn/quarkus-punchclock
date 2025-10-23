@@ -1,0 +1,16 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+(Application) as (Use)
+
+User -> (Start)
+
+note "Create new Entry" as N1
+(Start) .. N1
+N1 .. (Use)
+
+note "Read entries" as N2
+HR .. N2
+N2 .. (Use)
+
+@enduml
