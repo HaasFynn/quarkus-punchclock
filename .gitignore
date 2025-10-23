@@ -40,4 +40,4 @@ nb-configuration.xml
 .env
 
 # Postgres
-./pgdata
+/pgdata/
