@@ -5,6 +5,7 @@ import javax.persistence.*;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 public class Entry {
@@ -41,5 +42,12 @@ public class Entry {
 
   public void setCheckOut(LocalDateTime checkOut) {
     this.checkOut = checkOut;
+  }
+
+  @Override
+  public boolean equals (Object obj) {
+    return Objects.equals(this.id, ((Entry) obj).id) &&
+      this.checkIn == ((Entry) obj).checkIn &&
+      this.checkOut == ((Entry) obj).checkOut;
   }
 }
