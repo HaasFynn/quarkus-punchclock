@@ -1,14 +1,11 @@
 @startuml
-actor Client
-participant Localhost
-participant EntryController
-participant EntryService
+'https://plantuml.com/class-diagram
 
-Client --> Localhost : Entry ID
-Localhost --> EntryController: Entry ID
-EntryController --> EntryService : Entry ID
-EntryService --> EntryController : Entry
-EntryController --> Localhost : Entry
-Localhost --> Client : Entry
+class EntryController
+class EntryService
+class Entry
+
+EntryController -> EntryService: Forward Request information
+EntryService -> Entry: Handle Entries
 
 @enduml
