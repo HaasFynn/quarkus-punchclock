@@ -2,7 +2,7 @@ package ch.zli.m223.controller;
 
 import java.util.List;
 
-import ch.zli.m223.model.Entry;
+import ch.zli.m223.dto.EntryDTO;
 import ch.zli.m223.service.EntryService;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -27,7 +27,7 @@ public class EntryController {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Operation(summary = "Index all Entries.", description = "Returns a list of all entries.")
-  public List<Entry> index () {
+  public List<EntryDTO> index () {
     return entryService.findAll();
   }
 
@@ -36,8 +36,8 @@ public class EntryController {
   @Produces(MediaType.APPLICATION_JSON)
   @Consumes(MediaType.APPLICATION_JSON)
   @Operation(summary = "Creates a new entry.", description = "Creates a new entry and returns the newly added entry.")
-  public Entry create (Entry entry) {
-    return entryService.createEntry(entry);
+  public EntryDTO create (EntryDTO entryDTO) {
+    return entryService.createEntry(entryDTO);
   }
 
   @PUT
@@ -45,8 +45,8 @@ public class EntryController {
   @Produces(MediaType.APPLICATION_JSON)
   @Consumes(MediaType.APPLICATION_JSON)
   @Operation(summary = "Updates an existing entry.", description = "Updates an existing entry and returns the status of the update.")
-  public boolean update (Entry entry) {
-    return entryService.updateEntry(entry);
+  public boolean update (EntryDTO entryDTO) {
+    return entryService.updateEntry(entryDTO);
   }
 
   @DELETE

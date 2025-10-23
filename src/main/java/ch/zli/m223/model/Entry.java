@@ -20,6 +20,14 @@ public class Entry {
   @Column(nullable = false)
   private LocalDateTime checkOut;
 
+  public Entry (Long id, LocalDateTime checkIn, LocalDateTime checkOut) {
+    this.checkIn = checkIn;
+    this.checkOut = checkOut;
+  }
+
+  public Entry () {
+  }
+
   public Long getId() {
     return id;
   }
