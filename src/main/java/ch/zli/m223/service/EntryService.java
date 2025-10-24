@@ -28,11 +28,6 @@ public class EntryService {
     return convertedEquals(entityManager.merge(entry), entry);
   }
 
-  private boolean convertedEquals (Entry merged, Entry entry) {
-    return merged.getCheckIn().equals(entry.getCheckIn()) &&
-      merged.getCheckOut().equals(entry.getCheckOut());
-  }
-
   @Transactional
   public boolean deleteEntry (Long id) {
     Entry entry = entityManager.find(Entry.class, id);
@@ -46,6 +41,11 @@ public class EntryService {
   public List<EntryDTO> findAll () {
     var query = entityManager.createQuery("FROM Entry", Entry.class);
     return listToEntryDTOs(query.getResultList());
+  }
+
+  private boolean convertedEquals (Entry merged, Entry entry) {
+    return merged.getCheckIn().equals(entry.getCheckIn()) &&
+      merged.getCheckOut().equals(entry.getCheckOut());
   }
 
   public Entry toEntry (EntryDTO entryDTO) {

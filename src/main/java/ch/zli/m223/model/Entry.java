@@ -20,6 +20,10 @@ public class Entry {
   @Column(nullable = false)
   private LocalDateTime checkOut;
 
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "category")
+  private Category category;
+
   public Entry (Long id, LocalDateTime checkIn, LocalDateTime checkOut) {
     this.checkIn = checkIn;
     this.checkOut = checkOut;
