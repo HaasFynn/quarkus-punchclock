@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.zli.m223.dto.EntryDTO;
+import ch.zli.m223.model.Category;
 import ch.zli.m223.model.Entry;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -18,6 +19,11 @@ public class EntryService {
   @Transactional
   public EntryDTO createEntry (EntryDTO entryDTO) {
     Entry entry = toEntry(entryDTO);
+    if (entryDTO.getCategoryId() != null) {
+      Category category = entityManager.find(Category.class, entryDTO.getCategoryId());
+      entry.setCategory(category);
+    }
+
     entityManager.persist(entry);
     return toEntryDTO(entry);
   }
@@ -53,7 +59,7 @@ public class EntryService {
   }
 
   public EntryDTO toEntryDTO (Entry entry) {
-    return new EntryDTO(entry.getId(), entry.getCheckIn(), entry.getCheckOut());
+    return new EntryDTO(entry.getId(), entry.getCheckIn(), entry.getCheckOut(), entry.getCategory().getId());
   }
 
   public List<Entry> listToEntries (List<EntryDTO> entryDTOs) {
@@ -68,7 +74,8 @@ public class EntryService {
   public List<EntryDTO> listToEntryDTOs (List<Entry> entries) {
     List<EntryDTO> entryDTOList = new ArrayList<>();
     for (Entry entry : entries) {
-      EntryDTO entryDTO = new EntryDTO(entry.getId(), entry.getCheckIn(), entry.getCheckOut());
+      Long categoryId = entry.getCategory() != null ? entry.getCategory().getId() : -1;
+      EntryDTO entryDTO = new EntryDTO(entry.getId(), entry.getCheckIn(), entry.getCheckOut(), categoryId);
       entryDTOList.add(entryDTO);
     }
     return entryDTOList;

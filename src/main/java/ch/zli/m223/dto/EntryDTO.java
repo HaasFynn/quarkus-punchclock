@@ -6,14 +6,16 @@ public class EntryDTO {
   private final Long id;
   private final LocalDateTime checkIn;
   private final LocalDateTime checkOut;
+  private final Long categoryId;
 
-  public EntryDTO (Long id, LocalDateTime checkIn, LocalDateTime checkOut) {
+  public EntryDTO (Long id, LocalDateTime checkIn, LocalDateTime checkOut, Long categoryId) {
     this.id = id;
     this.checkIn = checkIn;
     this.checkOut = checkOut;
+    this.categoryId = categoryId;
   }
 
-  public Long  getId() {
+  public Long getId() {
     return id;
   }
 
@@ -23,5 +25,9 @@ public class EntryDTO {
 
   public LocalDateTime getCheckOut () {
     return checkOut;
+  }
+
+  public Long getCategoryId () {
+    return categoryId;
   }
 }

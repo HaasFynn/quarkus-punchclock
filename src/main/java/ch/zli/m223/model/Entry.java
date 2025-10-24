@@ -1,11 +1,17 @@
 package ch.zli.m223.model;
 
-import javax.persistence.*;
-
-import org.eclipse.microprofile.openapi.annotations.media.Schema;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 @Entity
 public class Entry {
@@ -32,28 +38,32 @@ public class Entry {
   public Entry () {
   }
 
-  public Long getId() {
+  public Long getId () {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId (Long id) {
     this.id = id;
   }
 
-  public LocalDateTime getCheckIn() {
+  public LocalDateTime getCheckIn () {
     return checkIn;
   }
 
-  public void setCheckIn(LocalDateTime checkIn) {
+  public void setCheckIn (LocalDateTime checkIn) {
     this.checkIn = checkIn;
   }
 
-  public LocalDateTime getCheckOut() {
+  public LocalDateTime getCheckOut () {
     return checkOut;
   }
 
-  public void setCheckOut(LocalDateTime checkOut) {
+  public void setCheckOut (LocalDateTime checkOut) {
     this.checkOut = checkOut;
+  }
+
+  public void setCategory (Category category) {
+    this.category = category;
   }
 
   @Override
@@ -61,5 +71,9 @@ public class Entry {
     return Objects.equals(this.id, ((Entry) obj).id) &&
       this.checkIn == ((Entry) obj).checkIn &&
       this.checkOut == ((Entry) obj).checkOut;
+  }
+
+  public Category getCategory () {
+    return category;
   }
 }
