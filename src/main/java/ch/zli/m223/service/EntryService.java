@@ -13,8 +13,13 @@ import javax.transaction.Transactional;
 
 @ApplicationScoped
 public class EntryService {
-  @Inject
+
   private EntityManager entityManager;
+
+  @Inject
+  public EntryService (EntityManager entityManager, TagService tagService) {
+    this.entityManager = entityManager;
+  }
 
   @Transactional
   public EntryDTO createEntry (EntryDTO entryDTO) {
@@ -23,7 +28,6 @@ public class EntryService {
       Category category = entityManager.find(Category.class, entryDTO.getCategoryId());
       entry.setCategory(category);
     }
-
     entityManager.persist(entry);
     return toEntryDTO(entry);
   }
@@ -55,17 +59,34 @@ public class EntryService {
   }
 
   public Entry toEntry (EntryDTO entryDTO) {
-    return new Entry(entryDTO.getId(), entryDTO.getCheckIn(), entryDTO.getCheckOut());
+    return new Entry(
+      entryDTO.getId(),
+      entryDTO.getCheckIn(),
+      entryDTO.getCheckOut(),
+      entryDTO.getTags()
+      );
   }
 
   public EntryDTO toEntryDTO (Entry entry) {
-    return new EntryDTO(entry.getId(), entry.getCheckIn(), entry.getCheckOut(), entry.getCategory().getId());
+    return new EntryDTO(
+      entry.getId(),
+      entry.getCheckIn(),
+      entry.getCheckOut(),
+      entry.getCategory().getId(),
+      entry.getTags()
+    );
   }
 
   public List<Entry> listToEntries (List<EntryDTO> entryDTOs) {
     List<Entry> entryList = new ArrayList<>();
     for (EntryDTO entryDTO : entryDTOs) {
-      Entry entry = new Entry(entryDTO.getId(), entryDTO.getCheckIn(), entryDTO.getCheckOut());
+      Entry entry = new Entry(
+        entryDTO.getId(),
+        entryDTO.getCheckIn(),
+        entryDTO.getCheckOut(),
+        entryDTO.getTags()
+      );
+
       entryList.add(entry);
     }
     return entryList;
@@ -75,7 +96,13 @@ public class EntryService {
     List<EntryDTO> entryDTOList = new ArrayList<>();
     for (Entry entry : entries) {
       Long categoryId = entry.getCategory() != null ? entry.getCategory().getId() : -1;
-      EntryDTO entryDTO = new EntryDTO(entry.getId(), entry.getCheckIn(), entry.getCheckOut(), categoryId);
+      EntryDTO entryDTO = new EntryDTO(
+        entry.getId(),
+        entry.getCheckIn(),
+        entry.getCheckOut(),
+        categoryId,
+        entry.getTags()
+      );
       entryDTOList.add(entryDTO);
     }
     return entryDTOList;

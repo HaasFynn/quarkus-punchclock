@@ -2,14 +2,18 @@ package ch.zli.m223.model;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
@@ -26,13 +30,30 @@ public class Entry {
   @Column(nullable = false)
   private LocalDateTime checkOut;
 
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinColumn(name = "category")
   private Category category;
 
-  public Entry (Long id, LocalDateTime checkIn, LocalDateTime checkOut) {
+  @ManyToMany
+  @JoinTable(
+    name = "tag_entry",
+    joinColumns = @JoinColumn(name = "entry_id"),
+    inverseJoinColumns = @JoinColumn(name = "tag_id")
+  )
+  private Set<Tag> tags;
+
+  public Entry (Long id, LocalDateTime checkIn, LocalDateTime checkOut, Set<Tag> tags) {
+    this.id = id;
     this.checkIn = checkIn;
     this.checkOut = checkOut;
+    this.tags = tags;
+  }
+
+  public Entry (LocalDateTime checkIn, LocalDateTime checkOut, Set<Tag> tags, Category category) {
+    this.checkIn = checkIn;
+    this.checkOut = checkOut;
+    this.tags = tags;
+    this.category = category;
   }
 
   public Entry () {
@@ -62,10 +83,6 @@ public class Entry {
     this.checkOut = checkOut;
   }
 
-  public void setCategory (Category category) {
-    this.category = category;
-  }
-
   @Override
   public boolean equals (Object obj) {
     return Objects.equals(this.id, ((Entry) obj).id) &&
@@ -75,5 +92,17 @@ public class Entry {
 
   public Category getCategory () {
     return category;
+  }
+
+  public void setCategory (Category category) {
+    this.category = category;
+  }
+
+  public Set<Tag> getTags () {
+    return tags;
+  }
+
+  public void setTags (Set<Tag> tags) {
+    this.tags = tags;
   }
 }
