@@ -11,3 +11,8 @@ input[type='submit'], table {
 table {
   width: 40rem;
 }
+
+.btn-danger {
+  background-color: red;
+  color: white;
+}

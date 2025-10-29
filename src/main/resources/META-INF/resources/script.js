@@ -38,10 +38,29 @@ const indexEntries = () => {
     renderEntries();
 };
 
+const deleteEntry = (id) => {
+  fetch(`${URL}/entries/delete/${id}`, {
+    method: 'DELETE'
+  }).then((result) => {
+    result.json().then((entry) => {
+      entries.splice(id, 1);
+      renderEntries();
+    })
+  })
+}
+
 const createCell = (text) => {
     const cell = document.createElement('td');
     cell.innerText = text;
     return cell;
+};
+
+const deleteButton = (id) => {
+  const button = document.createElement("button");
+  button.innerText = "Delete";
+  button.classList.add('btn-danger');
+  button.onclick = () => deleteEntry(id);
+  return button;
 };
 
 const renderEntries = () => {
@@ -52,6 +71,7 @@ const renderEntries = () => {
         row.appendChild(createCell(entry.id));
         row.appendChild(createCell(new Date(entry.checkIn).toLocaleString()));
         row.appendChild(createCell(new Date(entry.checkOut).toLocaleString()));
+        row.appendChild(deleteButton(entry.id));
         display.appendChild(row);
     });
 };
