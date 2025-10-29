@@ -60,8 +60,9 @@ public class TestDataLoader {
     var category = categories.get(rand.nextInt(categories.size()));
     var anotherCategory = categories.get(rand.nextInt(categories.size()));
 
-    LocalDateTime veryEarly = LocalDateTime.of(1, 1, 1, 0, 0);
-    LocalDateTime veryLate = LocalDateTime.of(9999, 12, 31, 23, 59);
+    LocalDateTime randomDay = LocalDateTime.of(2023, 5, 15, 0, 0);
+    LocalDateTime veryEarly = randomDay.withHour(6).withMinute(0);
+    LocalDateTime veryLate = randomDay.withHour(12).withMinute(59);
 
     em.persist(new Entry(veryEarly, veryLate, firstTags, category));
     em.persist(new Entry(veryEarly, veryLate, lastTags, anotherCategory));
