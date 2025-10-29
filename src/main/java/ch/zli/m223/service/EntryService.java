@@ -1,7 +1,11 @@
 package ch.zli.m223.service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ch.zli.m223.dto.EntryDTO;
 import ch.zli.m223.model.Category;
@@ -15,10 +19,12 @@ import javax.transaction.Transactional;
 public class EntryService {
 
   private EntityManager entityManager;
+  private TimeSummaryService timeSummaryService;
 
   @Inject
-  public EntryService (EntityManager entityManager, TagService tagService) {
+  public EntryService (EntityManager entityManager, TagService tagService, TimeSummaryService timeSummaryService) {
     this.entityManager = entityManager;
+    this.timeSummaryService = timeSummaryService;
   }
 
   @Transactional
@@ -48,6 +54,18 @@ public class EntryService {
     return false;
   }
 
+  @Transactional
+  public String getTimeSummaries (Date date) {
+    LocalDate targetDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+    List<Entry> entries = entityManager.createQuery("FROM Entry", Entry.class).getResultList();
+    List<Entry> filteredEntries = entries.stream().filter(
+      entry -> entry.getCheckIn().toLocalDate().isEqual(targetDate)
+    ).collect(Collectors.toList());
+
+    return timeSummaryService.calculateSummaryPerDay(filteredEntries);
+  }
+
   public List<EntryDTO> findAll () {
     var query = entityManager.createQuery("FROM Entry", Entry.class);
     return listToEntryDTOs(query.getResultList());
@@ -64,7 +82,7 @@ public class EntryService {
       entryDTO.getCheckIn(),
       entryDTO.getCheckOut(),
       entryDTO.getTags()
-      );
+    );
   }
 
   public EntryDTO toEntryDTO (Entry entry) {

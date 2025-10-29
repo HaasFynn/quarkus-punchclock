@@ -13,6 +13,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
@@ -21,8 +22,12 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 @Tag(name = "Entries", description = "Handling of entries")
 public class EntryController {
 
-  @Inject
   EntryService entryService;
+
+  @Inject
+  public EntryController (EntryService entryService) {
+    this.entryService = entryService;
+  }
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
@@ -52,7 +57,16 @@ public class EntryController {
   @DELETE
   @Path("/delete/{id}")
   @Produces(MediaType.APPLICATION_JSON)
-  public boolean delete(@PathParam("id") Long id) {
+  public boolean delete (@PathParam("id") Long id) {
     return entryService.deleteEntry(id);
   }
+
+  @GET
+  @Path("/statistics/time-summaries")
+  @Produces(MediaType.APPLICATION_JSON)
+  @Operation(summary = "Returns sum of worked time.", description = "Returns a summary of time worked on a certain day.")
+  public String timeSummaries (@QueryParam("date") String date) {
+    return entryService.getTimeSummaries(new java.util.Date(java.sql.Date.valueOf(date).getTime()));
+  }
+
 }
