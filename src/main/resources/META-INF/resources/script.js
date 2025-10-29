@@ -42,7 +42,7 @@ const deleteEntry = (id) => {
   fetch(`${URL}/entries/delete/${id}`, {
     method: 'DELETE'
   }).then((result) => {
-    result.json().then((entry) => {
+    result.json().then(() => {
       entries.splice(id, 1);
       renderEntries();
     })
@@ -63,6 +63,8 @@ const deleteButton = (id) => {
   return button;
 };
 
+const styleTags = (entry) => entry.tags?.map(t => t.name || t).join(', ') || '';
+
 const renderEntries = () => {
     const display = document.querySelector('#entryDisplay');
     display.innerHTML = '';
@@ -71,6 +73,8 @@ const renderEntries = () => {
         row.appendChild(createCell(entry.id));
         row.appendChild(createCell(new Date(entry.checkIn).toLocaleString()));
         row.appendChild(createCell(new Date(entry.checkOut).toLocaleString()));
+        row.appendChild(createCell(styleTags(entry)));
+        row.appendChild(createCell(entry.category.name));
         row.appendChild(deleteButton(entry.id));
         display.appendChild(row);
     });

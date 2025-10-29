@@ -18,11 +18,11 @@ import javax.transaction.Transactional;
 @ApplicationScoped
 public class EntryService {
 
-  private EntityManager entityManager;
-  private TimeSummaryService timeSummaryService;
+  private final EntityManager entityManager;
+  private final TimeSummaryService timeSummaryService;
 
   @Inject
-  public EntryService (EntityManager entityManager, TagService tagService, TimeSummaryService timeSummaryService) {
+  public EntryService (EntityManager entityManager, TimeSummaryService timeSummaryService) {
     this.entityManager = entityManager;
     this.timeSummaryService = timeSummaryService;
   }
@@ -30,8 +30,8 @@ public class EntryService {
   @Transactional
   public EntryDTO createEntry (EntryDTO entryDTO) {
     Entry entry = toEntry(entryDTO);
-    if (entryDTO.getCategoryId() != null) {
-      Category category = entityManager.find(Category.class, entryDTO.getCategoryId());
+    if (entryDTO.getCategory() != null) {
+      Category category = entityManager.find(Category.class, entryDTO.getCategory());
       entry.setCategory(category);
     }
     entityManager.persist(entry);
@@ -90,7 +90,7 @@ public class EntryService {
       entry.getId(),
       entry.getCheckIn(),
       entry.getCheckOut(),
-      entry.getCategory().getId(),
+      entry.getCategory(),
       entry.getTags()
     );
   }
@@ -113,12 +113,11 @@ public class EntryService {
   public List<EntryDTO> listToEntryDTOs (List<Entry> entries) {
     List<EntryDTO> entryDTOList = new ArrayList<>();
     for (Entry entry : entries) {
-      Long categoryId = entry.getCategory() != null ? entry.getCategory().getId() : -1;
       EntryDTO entryDTO = new EntryDTO(
         entry.getId(),
         entry.getCheckIn(),
         entry.getCheckOut(),
-        categoryId,
+        entry.getCategory(),
         entry.getTags()
       );
       entryDTOList.add(entryDTO);
