@@ -3,25 +3,22 @@ package ch.zli.m223.dto;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import ch.zli.m223.model.Category;
 import ch.zli.m223.model.Tag;
 
 public class EntryDTO {
   private final Long id;
   private final LocalDateTime checkIn;
   private final LocalDateTime checkOut;
-  private final Long categoryId;
-  private Set<Tag> tags;
+  private final Category category;
 
-  public EntryDTO (Long id, LocalDateTime checkIn, LocalDateTime checkOut, Long categoryId, Set<Tag> tags) {
+  private Set<Tag> tags;
+  public EntryDTO (Long id, LocalDateTime checkIn, LocalDateTime checkOut, Category category, Set<Tag> tags) {
     this.id = id;
     this.checkIn = checkIn;
     this.checkOut = checkOut;
-    this.categoryId = categoryId;
+    this.category = category;
     this.tags = tags;
-  }
-
-  public Long getCategoryId () {
-    return categoryId;
   }
 
   public Long getId () {
@@ -30,6 +27,10 @@ public class EntryDTO {
 
   public LocalDateTime getCheckIn () {
     return checkIn;
+  }
+
+  public Category getCategory () {
+    return category;
   }
 
   public LocalDateTime getCheckOut () {
