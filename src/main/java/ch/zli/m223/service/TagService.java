@@ -5,10 +5,10 @@ import java.util.List;
 
 import ch.zli.m223.dto.TagDTO;
 import ch.zli.m223.model.Tag;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class TagService {

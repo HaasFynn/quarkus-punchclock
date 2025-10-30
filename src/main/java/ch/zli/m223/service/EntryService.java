@@ -10,10 +10,10 @@ import java.util.stream.Collectors;
 import ch.zli.m223.dto.EntryDTO;
 import ch.zli.m223.model.Category;
 import ch.zli.m223.model.Entry;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class EntryService {
@@ -31,7 +31,7 @@ public class EntryService {
   public EntryDTO createEntry (EntryDTO entryDTO) {
     Entry entry = toEntry(entryDTO);
     if (entryDTO.getCategory() != null) {
-      Category category = entityManager.find(Category.class, entryDTO.getCategory());
+      Category category = entityManager.find(Category.class, entryDTO.getCategory().getId());
       entry.setCategory(category);
     }
     entityManager.persist(entry);
