@@ -49,6 +49,33 @@ const deleteEntry = (id) => {
   })
 }
 
+const indexTags = () => {
+  fetch(`${URL}/tags`, {
+    method: 'GET'
+  }).then((result) => {
+    result.json().then((tags) => {
+      renderTags(tags)
+    })
+  })
+}
+
+const renderTags = (tags) => {
+
+}
+
+const editEntry = (entry) => {
+  fetch(`${URL}/entries/update`, {
+    method: 'PUT',
+    body: JSON.stringify(entry),
+  }).then((result) => {
+    result.json().then((updatedEntry) => {
+      entries.splice(updatedEntry.id, 1);
+      entries.push(updatedEntry);
+      renderEntries();
+    })
+  })
+}
+
 const createCell = (text) => {
     const cell = document.createElement('td');
     cell.innerText = text;

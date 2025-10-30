@@ -4,7 +4,7 @@ import java.time.ZoneId;
 import java.util.List;
 
 import ch.zli.m223.model.Entry;
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class TimeSummaryService {
